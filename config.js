@@ -13,15 +13,15 @@ window.EMPRESA = {
 
   menu: [
     { texto: 'Verificar certificado', url: '/' },
-    { texto: 'WhatsApp', url: 'https://wa.me/527822104365' },
-    { texto: 'Contacto', url: 'mailto:gerencia@newports.com.mx' }
+    { texto: 'WhatsApp', url: 'https://wa.me/527225316290' },
+    { texto: 'Contacto', url: 'mailto:informes@maxansoluciones.com' }
   ],
 
   contacto: {
-    direccion: 'Poza Rica, Veracruz, México',
-    telefono: '+52 782 210 4365',
-    whatsapp: '527822104365',
-    email: 'gerencia@newports.com.mx'
+    direccion: 'Ex Hacienda Barbabosa 100-A, Col. San Miguel Zinacantepec, C.P. 51357, Estado de México',
+    telefono: '+52 722 531 6290',
+    whatsapp: '527225316290',
+    email: 'informes@maxansoluciones.com'
   },
   avisoPrivacidad: '',               // PENDIENTE: liga al PDF del aviso de privacidad
 
