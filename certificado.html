@@ -40,25 +40,34 @@
     const r = await api({ id: m[1] });
     if (!r.ok) return noEncontrado('No encontramos este certificado');
     const c = r.cert;
-    const cancelado = c.estatus === 'Cancelado';
-    document.title = 'Certificado para: ' + c.nombre + ' | ' + EMPRESA.nombre;
-    const campo = (k, v) => v ? `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>` : '';
+    const est = String(c.estatus || 'Vigente').trim();
+    const dmy = t => { const x = String(t || '').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); return x ? new Date(+x[3], x[2] - 1, +x[1], 23, 59) : null; };
+    const fin = dmy(c.fin);
+    const vencido = est === 'Vigente' && fin && fin < new Date();
+    const valido = est === 'Vigente' && !vencido;
+    const titulo = valido ? '✔ Certificado vigente' : vencido ? '✖ Certificado vencido' : '✖ Certificado ' + est.toLowerCase();
+    document.title = 'Certificado: ' + c.centro + ' | ' + EMPRESA.nombre;
+    const campo = (k, v) => (v !== '' && v != null) ? `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>` : '';
     box.innerHTML = `
-      <div class="status ${cancelado ? 'bad' : 'ok'}">${cancelado ? '✖ Certificado cancelado' : '✔ Certificado válido'}</div>
+      <div class="status ${valido ? 'ok' : 'bad'}">${esc(titulo)}</div>
       <div class="body">
-        <p class="label">Certificado otorgado a</p>
-        <p class="name">${esc(c.nombre)}</p>
-        <p class="course">${esc(c.curso)}</p>
+        <p class="label">Certificado otorgado al centro de trabajo</p>
+        <p class="name">${esc(c.centro)}</p>
+        ${c.alcance ? `<p class="course">Alcance: ${esc(c.alcance)}</p>` : ''}
         <dl>
+          ${campo('Folio del certificado', c.folioCert)}
           ${campo('Folio', c.folio)}
-          ${campo('Empresa', c.empresa)}
-          ${campo('Duración', c.horas ? c.horas + ' horas' : '')}
-          ${campo('Fecha de emisión', c.emision)}
-          ${campo('Vigencia hasta', c.vigencia)}
-          ${campo('Instructor / Evaluador', c.instructor)}
-          ${campo('Registro STPS', c.stps)}
+          ${campo('Estatus', vencido ? 'Vencido' : est)}
+          ${campo('Entidad federativa', c.entidad)}
+          ${campo('Sector', c.sector)}
+          ${campo('Fecha de inicio', c.inicio)}
+          ${campo('Fecha de término', c.fin)}
+          ${campo('Mujeres', c.mujeres)}
+          ${campo('Hombres', c.hombres)}
+          ${campo('Total de personal', c.total)}
+          ${campo('Puntaje obtenido', c.puntaje)}
         </dl>
-        <p class="note">Información emitida por ${esc(EMPRESA.nombre)}. Consulta realizada el ${new Date().toLocaleDateString('es-MX')}.</p>
+        <p class="note">Información emitida por ${esc(EMPRESA.razonSocial || EMPRESA.nombre)}. Consulta realizada el ${new Date().toLocaleDateString('es-MX')}.</p>
       </div>`;
   } catch (e) {
     box.innerHTML = `<div class="status none">No se pudo consultar</div><div class="body"><p>Intenta de nuevo en unos minutos.</p></div>`;
