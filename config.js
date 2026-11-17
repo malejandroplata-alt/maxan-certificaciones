@@ -3,6 +3,7 @@
    ========================================================= */
 window.EMPRESA = {
   nombre: 'MAXAN Soluciones',
+  razonSocial: 'MAXAN Soluciones, S.A. de C.V.',
   logo: '/logo.png',                 // logo MAXAN Soluciones
   colorPrincipal: '#1c680c',         // verde oscuro del logo MAXAN
   colorAcento: '#6fb52c',            // verde claro del logo MAXAN

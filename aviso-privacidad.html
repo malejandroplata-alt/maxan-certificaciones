@@ -113,7 +113,7 @@
 <script>
   const E = EMPRESA, c = E.contacto;
   document.title = 'Aviso de privacidad | ' + E.nombre;
-  document.querySelectorAll('.e-nombre').forEach(x => x.textContent = E.nombre);
+  document.querySelectorAll('.e-nombre').forEach(x => x.textContent = E.razonSocial || E.nombre);
   document.querySelectorAll('.e-dir').forEach(x => x.textContent = c.direccion);
   document.querySelectorAll('.e-mail').forEach(x => { x.textContent = c.email; x.href = 'mailto:' + c.email; });
   document.querySelectorAll('.e-tel').forEach(x => { x.textContent = c.telefono; x.href = 'tel:' + c.telefono.replace(/\s/g, ''); });

@@ -31,7 +31,7 @@
           <p><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></p></div>
         ${redes ? `<div><h4>Síguenos</h4><p>${redes}</p></div>` : ''}
       </div>
-      <div class="legal wrap">© ${new Date().getFullYear()} ${esc(E.nombre)}. Todos los derechos reservados.
+      <div class="legal wrap">© ${new Date().getFullYear()} ${esc(E.razonSocial || E.nombre)}. Todos los derechos reservados.
         ${E.avisoPrivacidad ? ` · <a href="${esc(E.avisoPrivacidad)}" target="_blank" rel="noopener">Aviso de privacidad</a>` : ''}</div>
     </footer>`;
 
