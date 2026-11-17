@@ -67,7 +67,7 @@
           ${campo('Total de personal', c.total)}
           ${campo('Puntaje obtenido', c.puntaje)}
         </dl>
-        <p class="note">Información emitida por ${esc(EMPRESA.razonSocial || EMPRESA.nombre)}. Consulta realizada el ${new Date().toLocaleDateString('es-MX')}.</p>
+        <p class="note">Información emitida por ${esc(EMPRESA.razonSocial || EMPRESA.nombre)} Consulta realizada el ${new Date().toLocaleDateString('es-MX')}.</p>
       </div>`;
   } catch (e) {
     box.innerHTML = `<div class="status none">No se pudo consultar</div><div class="body"><p>Intenta de nuevo en unos minutos.</p></div>`;
