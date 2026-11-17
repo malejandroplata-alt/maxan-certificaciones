@@ -23,7 +23,7 @@ window.EMPRESA = {
     whatsapp: '527225316290',
     email: 'informes@maxansoluciones.com'
   },
-  avisoPrivacidad: '',               // PENDIENTE: liga al PDF del aviso de privacidad
+  avisoPrivacidad: '/aviso-privacidad.html',
 
   redes: {                            // agrega las que tenga MAXAN
     facebook: '', linkedin: '', instagram: '', youtube: ''
