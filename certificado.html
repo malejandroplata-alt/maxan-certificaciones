@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Certificado</title>
+<link rel="stylesheet" href="/app.css">
+<script src="/config.js"></script>
+</head>
+<body>
+<div id="header"></div>
+
+<section class="hero"><div class="wrap">
+  <h1>Certificado</h1>
+  <div class="crumbs"><a href="/">Inicio</a> / Certificado</div>
+</div></section>
+
+<main><div class="wrap">
+  <div id="res" class="card"><div class="body muted">Consultando certificado…</div></div>
+  <div class="card search-card"><div class="body">
+    <form action="/" onsubmit="event.preventDefault(); location.href='/?folio='+encodeURIComponent(this.q.value)">
+      <input name="q" placeholder="Verificar otro folio" required>
+      <button class="btn" type="submit">Verificar</button>
+    </form>
+  </div></div>
+</div></main>
+
+<div id="footer"></div>
+<script src="/app.js"></script>
+<script>
+(async () => {
+  const box = document.getElementById('res');
+  const m = location.pathname.match(/\/certificado\/([0-9a-fA-F-]{36})/);
+  const noEncontrado = t => box.innerHTML =
+    `<div class="status none">${esc(t)}</div><div class="body"><p>Verifica que escaneaste el código correcto o comunícate con nosotros.</p></div>`;
+  if (!m) return noEncontrado('Código de certificado no válido');
+
+  try {
+    const r = await api({ id: m[1] });
+    if (!r.ok) return noEncontrado('No encontramos este certificado');
+    const c = r.cert;
+    const cancelado = c.estatus === 'Cancelado';
+    document.title = 'Certificado para: ' + c.nombre + ' | ' + EMPRESA.nombre;
+    const campo = (k, v) => v ? `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>` : '';
+    box.innerHTML = `
+      <div class="status ${cancelado ? 'bad' : 'ok'}">${cancelado ? '✖ Certificado cancelado' : '✔ Certificado válido'}</div>
+      <div class="body">
+        <p class="label">Certificado otorgado a</p>
+        <p class="name">${esc(c.nombre)}</p>
+        <p class="course">${esc(c.curso)}</p>
+        <dl>
+          ${campo('Folio', c.folio)}
+          ${campo('Empresa', c.empresa)}
+          ${campo('Duración', c.horas ? c.horas + ' horas' : '')}
+          ${campo('Fecha de emisión', c.emision)}
+          ${campo('Vigencia hasta', c.vigencia)}
+          ${campo('Instructor / Evaluador', c.instructor)}
+          ${campo('Registro STPS', c.stps)}
+        </dl>
+        <p class="note">Información emitida por ${esc(EMPRESA.nombre)}. Consulta realizada el ${new Date().toLocaleDateString('es-MX')}.</p>
+      </div>`;
+  } catch (e) {
+    box.innerHTML = `<div class="status none">No se pudo consultar</div><div class="body"><p>Intenta de nuevo en unos minutos.</p></div>`;
+  }
+})();
+</script>
+</body>
+</html>

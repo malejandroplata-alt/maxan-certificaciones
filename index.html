@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verificación de certificados</title>
+<link rel="stylesheet" href="/app.css">
+<script src="/config.js"></script>
+</head>
+<body>
+<div id="header"></div>
+
+<section class="hero"><div class="wrap">
+  <h1>Verificación de certificados</h1>
+  <div class="crumbs"><a href="/">Inicio</a> / Verificar</div>
+</div></section>
+
+<main><div class="wrap">
+  <div class="card"><div class="body">
+    <p>Escanea el código QR de tu certificado o escribe su folio para confirmar que es auténtico.</p>
+    <form id="f">
+      <input id="folio" placeholder="Folio del certificado" required autocomplete="off">
+      <button class="btn" type="submit">Verificar</button>
+    </form>
+    <p id="msg" class="muted"></p>
+  </div></div>
+</div></main>
+
+<div id="footer"></div>
+<script src="/app.js"></script>
+<script>
+  document.title = 'Verificación de certificados | ' + EMPRESA.nombre;
+  document.getElementById('f').addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const msg = document.getElementById('msg');
+    msg.textContent = 'Buscando…';
+    try {
+      const r = await api({ folio: document.getElementById('folio').value.trim() });
+      if (r.ok) location.href = '/certificado/' + r.cert.id + '/';
+      else msg.textContent = 'No encontramos un certificado con ese folio.';
+    } catch (e) { msg.textContent = 'No se pudo consultar. Intenta de nuevo en unos minutos.'; }
+  });
+  const q = new URLSearchParams(location.search).get('folio');
+  if (q) { document.getElementById('folio').value = q; document.getElementById('f').requestSubmit(); }
+</script>
+</body>
+</html>
